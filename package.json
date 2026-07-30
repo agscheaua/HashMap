@@ -1,0 +1,43 @@
+{
+  "name": "",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/index.js",
+  "scripts": {
+    "branchName": "git branch",
+    "start": "webpack server --open --config webpack.dev.js",
+    "build": "webpack server --open --config webpack.prod.js",
+    "construct": "webpack --config webpack.dev.js",
+    "lint": "npx eslint ./src/index.js",
+    "format": "npx prettier --write ./src",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "babel": "^5.8.38",
+    "css-loader": "^7.1.4",
+    "eslint": "^10.3.0",
+    "globals": "^17.6.0",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.6",
+    "jest": "^30.4.2",
+    "prettier": "3.8.3",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^7.0.2",
+    "webpack-dev-server": "^5.2.3",
+    "webpack-merge": "^6.0.1"
+  }
+}
