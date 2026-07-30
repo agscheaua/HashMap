@@ -28,15 +28,18 @@ class HashMap {
 
   set(key, value) {
     const keyHashCode = this.hash(key);
+
     if (this.entry[keyHashCode]) {
       let tempNodeOfTheLinkedListInBucket = this.entry[keyHashCode].next;
       for (let i = 0; i < this.entry[keyHashCode].size; i++) {
         if (tempNodeOfTheLinkedListInBucket.key === key) {
           tempNodeOfTheLinkedListInBucket.value = value;
-          break
+          break;
         };
-        if (i + 1 === this.entry[keyHashCode]) {
-          this.entry[keyHashCode].next = {hallo:1};
+        if (i + 1 === this.entry[keyHashCode].size) {
+          tempNodeOfTheLinkedListInBucket.next = new LinkedList(key, value);
+          this.entry[keyHashCode].size += 1;
+          break;
         };
         tempNodeOfTheLinkedListInBucket = tempNodeOfTheLinkedListInBucket.next;
       };
@@ -52,11 +55,30 @@ class HashMap {
       this.entry[keyHashCode].size += 1;
     };
   };
+
+  get(key) {
+    const keyHashCode = this.hash(key);
+
+    // conditional flow statement to check if a bucket exist with
+    // that hash code
+
+    let tempNodeOfTheLinkedListInBucket = this.entry[keyHashCode].next;
+    for (let i = 0; i < this.entry[keyHashCode].size; i++) {
+      if (tempNodeOfTheLinkedListInBucket.key === key) {
+        return tempNodeOfTheLinkedListInBucket.value;
+      };
+      tempNodeOfTheLinkedListInBucket = tempNodeOfTheLinkedListInBucket.next;
+    };
+    return null;
+  };
 };
 
 const myHashMap = new HashMap();
+
 myHashMap.set("alex", 25);
 myHashMap.set("george", 10);
 myHashMap.set("alex", 1);
+console.log(myHashMap.get("george1"));
+
 
 console.log(myHashMap);
