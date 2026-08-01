@@ -34,30 +34,28 @@ class HashMap {
       for (let i = 0; i < this.entry[keyHashCode].size; i++) {
         if (tempNodeOfTheLinkedListInBucket.key === key) {
           tempNodeOfTheLinkedListInBucket.value = value;
-          this.entriesGrowth();
           break;
         };
         if (i + 1 === this.entry[keyHashCode].size) {
           tempNodeOfTheLinkedListInBucket.next = new LinkedList(key, value);
           this.entry[keyHashCode].size += 1;
-          this.entriesGrowth();
           break;
         };
         tempNodeOfTheLinkedListInBucket = tempNodeOfTheLinkedListInBucket.next;
       };
-
-      return;
     };
 
-    const head = {
-      next: null,
-      size: 0,
-    };
     if (this.entry[keyHashCode] === undefined) {
+      const head = {
+        next: null,
+        size: 0,
+      };
       this.entry[keyHashCode] = head;
       this.entry[keyHashCode].next = new LinkedList(key, value);
       this.entry[keyHashCode].size += 1;
     };
+
+    this.entriesGrowth();
   };
 
   get(key) {
@@ -213,57 +211,40 @@ class HashMap {
 
   entriesGrowth() {
     const growthFactor = this.capacity * this.loadFactor;
+    const allEntriesInHashMap = this.entries();
+    const currentSizeOfTheHashMap = this.length();
 
-    if (growthFactor <= this.length()) {
+    if (growthFactor >= currentSizeOfTheHashMap) {
       return;
     };
 
-    if (growthFactor > this.length()) {
-      const allEntriesInHashMap = this.entries();
+    if (growthFactor < currentSizeOfTheHashMap) {
       this.clear();
       this.capacity *= 2;
 
       for (let i = 0; i < allEntriesInHashMap.length; i++) {
         this.set(allEntriesInHashMap[i][0], allEntriesInHashMap[i][1]);
       };
+      return;
     };
   };
-
 };
-
-const myHashMap = new HashMap();
-
-//myHashMap.set("alex", 25);
-//myHashMap.set("george", 10);
-//myHashMap.set("alex", 1);
-//console.log(myHashMap.get("george"));
-//console.log(myHashMap.has("georgeA"));
-//console.log(myHashMap.remove("alex"));
-//console.log(myHashMap.length());
-//myHashMap.clear();
-//console.log(myHashMap.keys());
-//console.log(myHashMap.values());
-//console.log(myHashMap.entries());
-//myHashMap.entriesGrowth();
-
-//console.log(myHashMap);
 
 const test = new HashMap();
 
-test.set('apple', 'red')
-test.set('banana', 'yellow')
-test.set('carrot', 'orange')
-test.set('dog', 'brown')
-test.set('elephant', 'gray')
-test.set('frog', 'green')
-test.set('grape', 'purple')
-test.set('hat', 'black')
-test.set('ice cream', 'white')
-test.set('jacket', 'blue')
-test.set('kite', 'pink')
-test.set('lion', 'golden')
-test.set('moon', 'silver')
-test.set('clown', 'red')  
-
+test.set('apple', 'red');
+test.set('banana', 'yellow');
+test.set('carrot', 'orange');
+test.set('dog', 'brown');
+test.set('elephant', 'gray');
+test.set('frog', 'green');
+test.set('grape', 'purple');
+test.set('hat', 'black');
+test.set('ice cream', 'white');
+test.set('jacket', 'blue');
+test.set('kite', 'pink');
+test.set('lion', 'golden');
+test.set('moon', 'silver');
+test.set('clown', 'red');
 
 console.log(test);
