@@ -1,12 +1,11 @@
 class LinkedList {
-  constructor(key = undefined, value = undefined, next = null) {
+  constructor(key = undefined, next = null) {
     this.key = key;
-    this.value = value;
     this.next = next;
   };
 };
 
-class HashMap {
+class HashSet {
   constructor() {
     this.capacity = 16;
     this.loadFactor = 0.75;
@@ -26,18 +25,18 @@ class HashMap {
     return hashCode; 
   };
 
-  set(key, value) {
+  add(key) {
     const keyHashCode = this.hash(key);
 
     if (this.entry[keyHashCode]) {
       let tempNodeOfTheLinkedListInBucket = this.entry[keyHashCode].next;
+
       for (let i = 0; i < this.entry[keyHashCode].size; i++) {
         if (tempNodeOfTheLinkedListInBucket.key === key) {
-          tempNodeOfTheLinkedListInBucket.value = value;
           break;
         };
         if (i + 1 === this.entry[keyHashCode].size) {
-          tempNodeOfTheLinkedListInBucket.next = new LinkedList(key, value);
+          tempNodeOfTheLinkedListInBucket.next = new LinkedList(key);
           this.entry[keyHashCode].size += 1;
           break;
         };
@@ -51,7 +50,7 @@ class HashMap {
         size: 0,
       };
       this.entry[keyHashCode] = head;
-      this.entry[keyHashCode].next = new LinkedList(key, value);
+      this.entry[keyHashCode].next = new LinkedList(key);
       this.entry[keyHashCode].size += 1;
     };
 
@@ -68,7 +67,7 @@ class HashMap {
     let tempNodeOfTheLinkedListInBucket = this.entry[keyHashCode].next;
     for (let i = 0; i < this.entry[keyHashCode].size; i++) {
       if (tempNodeOfTheLinkedListInBucket.key === key) {
-        return tempNodeOfTheLinkedListInBucket.value;
+        return tempNodeOfTheLinkedListInBucket.key;
       };
       tempNodeOfTheLinkedListInBucket = tempNodeOfTheLinkedListInBucket.next;
     };
@@ -88,9 +87,10 @@ class HashMap {
         tempNodeOfTheLinkedListInBucket = tempNodeOfTheLinkedListInBucket.next;
       };
     };
+
     return false;
   };
-    
+
   remove(key) {
     const keyHashCode = this.hash(key);
 
@@ -108,7 +108,7 @@ class HashMap {
         for (let i = 0; i < this.entry[keyHashCode].size; i++) {
           if (tempNodeOfTheLinkedListInBucket.key === key) {
             tempNodeBeforeTheDeletedOne.next = tempNodeAfterTheDeletedOne;
-            this.entry[keyHashCode] -= 1;
+            this.entry[keyHashCode].size -= 1;
             break;
           };
           tempNodeBeforeTheDeletedOne = tempNodeOfTheLinkedListInBucket;
@@ -122,17 +122,17 @@ class HashMap {
   };
 
   length() {
-    let nrOfKeysInHashMap = 0;
+    let nrOfKeysInHashSet = 0;
 
     for (let i = 0; i < this.capacity; i++) {
       if (this.entry[i] === undefined) {
         continue;
       };
       if (this.entry[i]) {
-        nrOfKeysInHashMap += this.entry[i].size;
+        nrOfKeysInHashSet += this.entry[i].size;
       };
     };
-    return nrOfKeysInHashMap;
+    return nrOfKeysInHashSet;
   };
 
   clear() {
@@ -140,73 +140,53 @@ class HashMap {
   };
 
   keys() {
-    let allKeysInTheHashMap = [];
+    let allKeysInTheHashSet = [];
     for (let i = 0; i < this.capacity; i++) {
       if (this.entry[i] === undefined) {
         continue;
       };
       if (this.entry[i]) {
         if(this.entry[i].size === 1) {
-          allKeysInTheHashMap.push(this.entry[i].next.key);
+          allKeysInTheHashSet.push(this.entry[i].next.key);
         };
 
         if (this.entry[i].size !== 1) {
           let tempNodeOfTheLinkedListInBucket = this.entry[i].next;
           for (let i = 0; i < this.entry[i].size; i++) {
-            allKeysInTheHashMap.push(tempNodeOfTheLinkedListInBucket.key);
+            allKeysInTheHashSet.push(tempNodeOfTheLinkedListInBucket.key);
             tempNodeOfTheLinkedListInBucket = tempNodeOfTheLinkedListInBucket.next;
           };
         };
       };
     };
-    return allKeysInTheHashMap;
+    return allKeysInTheHashSet;
   };
 
   values() {
-    let allValuesInTheHashMap = [];
-
-    for (let i = 0; i < this.capacity; i++) {
-      if (this.entry[i] === undefined) {
-        continue;
-      };
-      if (this.entry[i]) {
-        if(this.entry[i].size === 1) {
-          allValuesInTheHashMap.push(this.entry[i].next.value);
-        };
-
-        if (this.entry[i].size !== 1) {
-          let tempNodeOfTheLinkedListInBucket = this.entry[i].next;
-          for (let i = 0; i < this.entry[i].size; i++) {
-            allValuesInTheHashMap.push(tempNodeOfTheLinkedListInBucket.value);
-            tempNodeOfTheLinkedListInBucket = tempNodeOfTheLinkedListInBucket.next;
-          };
-        };
-      };
-    };
-    return allValuesInTheHashMap;
+    return this.keys();
   };
 
   entries() {
-    let allEntriesInTheHashMap = [];
+    let allEntriesInTheHashSet = [];
     for (let i = 0; i < this.capacity; i++) {
       if (this.entry[i] === undefined) {
         continue;
       };
       if (this.entry[i]) {
         if(this.entry[i].size === 1) {
-          allEntriesInTheHashMap.push([this.entry[i].next.key ,this.entry[i].next.value]);
+          allEntriesInTheHashSet.push([this.entry[i].next.key, this.entry[i].next.key]);
         };
 
         if (this.entry[i].size !== 1) {
           let tempNodeOfTheLinkedListInBucket = this.entry[i].next;
           for (let j = 0; j < this.entry[i].size; j++) {
-            allEntriesInTheHashMap.push([tempNodeOfTheLinkedListInBucket.key, tempNodeOfTheLinkedListInBucket.value]);
+            allEntriesInTheHashSet.push([tempNodeOfTheLinkedListInBucket.key, tempNodeOfTheLinkedListInBucket.key]);
             tempNodeOfTheLinkedListInBucket = tempNodeOfTheLinkedListInBucket.next;
           };
         };
       };
     };
-    return allEntriesInTheHashMap;
+    return allEntriesInTheHashSet;
   };
 
   entriesGrowth() {
@@ -223,28 +203,9 @@ class HashMap {
       this.capacity *= 2;
 
       for (let i = 0; i < allEntriesInHashMap.length; i++) {
-        this.set(allEntriesInHashMap[i][0], allEntriesInHashMap[i][1]);
+        this.add(allEntriesInHashMap[i][0]);
       };
       return;
     };
   };
 };
-
-const test = new HashMap();
-
-test.set('apple', 'red');
-test.set('banana', 'yellow');
-test.set('carrot', 'orange');
-test.set('dog', 'brown');
-test.set('elephant', 'gray');
-test.set('frog', 'green');
-test.set('grape', 'purple');
-test.set('hat', 'black');
-test.set('ice cream', 'white');
-test.set('jacket', 'blue');
-test.set('kite', 'pink');
-test.set('lion', 'golden');
-test.set('moon', 'silver');
-test.set('clown', 'red');
-
-console.log(test);
